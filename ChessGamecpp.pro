@@ -25,6 +25,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Board.h \
+    ChessGame.h \
     Color.h \
+    King.h \
     Piece.h \
     Position.h

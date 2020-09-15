@@ -13,9 +13,11 @@ public:
     Piece(Color color, QGraphicsItem *parent = 0);
 
     void mousePressEvent(QGraphicsSceneMouseEvent *e);
-    void setCurrentPosition(Position* pos);
+    void setPosition(Position* pos){
+        _pos = pos;
+    }
 
-    Position* getCurrentPosition(){
+    Position* getPosition(){
       return this->_pos;
     };
 
@@ -37,15 +39,17 @@ public:
         this->_alive = alive;
     }
 
-    QList <Position*> moveLocation();
-
-    virtual bool** possibleMoves() = 0;
-
-    bool possibleMove(Position pos){
-        return possibleMoves()[pos.getRow()][pos.getColumn()];
+    QList <Position*> moveLocation(){
+        return _location;
     }
-    bool setPosition(Position* pos);
 
+    virtual void possibleMoves() = 0;
+
+    void decolor();
+
+    bool positionSetting(Position* pos);
+
+    bool _firstMove;
 private:
     Board* _board;
 protected:
