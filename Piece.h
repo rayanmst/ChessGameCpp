@@ -1,38 +1,59 @@
 #ifndef PIECE_H
 #define PIECE_H
-#include <string>
+#include <QtWidgets/QGraphicsPixmapItem>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include "Position.h"
 #include "Board.h"
+#include "Color.h"
 using namespace std;
 
-class Piece {
+class Position;
+class Piece: public QGraphicsPixmapItem {
 public:
-    Piece(){};
-    Piece(Board* board):_board(board),_pos(NULL){};
-    virtual bool** possibleMoves();
+    Piece(Color color, QGraphicsItem *parent = 0);
+
+    void mousePressEvent(QGraphicsSceneMouseEvent *e);
+    void setCurrentPosition(Position* pos);
+
+    Position* getCurrentPosition(){
+      return this->_pos;
+    };
+
+    Color getColor(){
+        return this->_color;
+    }
+
+    void setColor(Color color){
+        this->_color = color;
+    }
+
+    virtual void setImage()= 0;
+
+    bool getAlive(){
+        return this->_alive;
+    }
+
+    void setAlive(bool alive){
+        this->_alive = alive;
+    }
+
+    QList <Position*> moveLocation();
+
+    virtual bool** possibleMoves() = 0;
+
     bool possibleMove(Position pos){
         return possibleMoves()[pos.getRow()][pos.getColumn()];
     }
-    bool isThereAnyPossibleMove(){
-        bool** mat = possibleMoves();
-        int length = 8;
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < length; j++) {
-                if (mat[i][j]) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    bool setPosition(Position* pos);
+
 private:
     Board* _board;
 protected:
     Position* _pos;
+    Color _color;
+    bool _alive;
+    QList <Position*> _location;
 
-    Board* getBoard(){
-        return _board;
-    }
 };
 
 
