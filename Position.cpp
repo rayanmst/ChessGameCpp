@@ -47,7 +47,7 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
 
         //Novos parâmetros da peça movida
         game->pieceToMove->getPosition()->setOcupation(false);
-        game->pieceToMove->getPosition()->_currentPiece = NULL;
+        game->pieceToMove->getPosition()->currentPiece = NULL;
         game->pieceToMove->getPosition()->resetColor();
         placePiece(game->pieceToMove);
 

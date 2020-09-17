@@ -1,6 +1,7 @@
 #ifndef POSITION_H
 #define POSITION_H
 #include "Piece.h"
+#include "Color.h"
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QBrush>
 #include <QtWidgets/QGraphicsRectItem>

@@ -38,7 +38,7 @@ void Piece::decolor(){
 
 bool Piece::positionSetting(Position *pos){
     if(pos->isOcupied()){
-        King *k = dynamic_cast<King*>(_location.last()->_currentPiece);
+        King *k = dynamic_cast<King*>(_location.last()->currentPiece);
         if(k){
             pos->setColor(Qt::blue);
         } else
