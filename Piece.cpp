@@ -15,6 +15,10 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *e){
         game->pieceToMove = NULL;
         return;
     }
+    //Verifica se a peça ainda está viva ou se é do respectivo jogador
+    if((!getAlive()) || ((game->getTurn() != this->getColor()) && (!game->pieceToMove))){
+        return;
+    }
 
     //Selecionando a peca
     if(!game->pieceToMove){
@@ -27,5 +31,21 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *e){
 }
 
 void Piece::decolor(){
+    for(int i=0,n=_location.size();i<n;i++){
+        _location[i]->resetColor();
+    }
+}
+
+bool Piece::positionSetting(Position *pos){
+    if(pos->isOcupied()){
+        King *k = dynamic_cast<King*>(_location.last()->_currentPiece);
+        if(k){
+            pos->setColor(Qt::blue);
+        } else
+            pos->setColor(Qt::darkRed);
+        return true;
+    } else
+        _location.last()->setColor(Qt::darkRed);
+    return false;
 
 }

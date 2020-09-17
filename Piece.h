@@ -3,9 +3,7 @@
 #include <QtWidgets/QGraphicsPixmapItem>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include "Position.h"
-#include "Board.h"
 #include "Color.h"
-using namespace std;
 
 class Position;
 class Piece: public QGraphicsPixmapItem {
@@ -50,8 +48,7 @@ public:
     bool positionSetting(Position* pos);
 
     bool _firstMove;
-private:
-    Board* _board;
+
 protected:
     Position* _pos;
     Color _color;

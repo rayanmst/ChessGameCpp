@@ -3,7 +3,8 @@
 
 enum class Color {
     BLACK,
-    WHITE
+    WHITE,
+    NOCOLOR
 };
 
 #endif // COLOR_H

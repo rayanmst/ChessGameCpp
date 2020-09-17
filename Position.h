@@ -1,34 +1,64 @@
 #ifndef POSITION_H
 #define POSITION_H
-#include <string>
-using namespace std;
+#include "Piece.h"
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QBrush>
+#include <QtWidgets/QGraphicsRectItem>
 
-class Position{
-private:
-    int _row;
-    int _column;
+class Piece;
+class Position: public QGraphicsRectItem{
+
 public:
-    Position();
-    Position(int row, int column):_row(row), _column(column){};
-    int getRow(){
-        return _row;
-    };
 
-    void setRow(int row){
-        _row=row;
-    };
+    Position(QGraphicsItem *parent=0);
 
-    int getColumn(){
-        return _column;
+    ~Position(){
+        delete this;
     }
 
-    void setValues(int row, int column){
-        _row=row; _column = column;
+    void mousePressEvent(QGraphicsSceneMouseEvent* e);
+
+    void setColor(QColor color){
+        _brush.setColor(color);
+        setBrush(color);
     }
 
-    std::string to_string() {
-        return '[' + std::to_string(_row) + ',' + std::to_string(_column) + ']';
+    void placePiece(Piece* p);
+
+    void resetColor(){
+        setColor(_originalColor);
     }
+    void setOriginalColor(QColor val){
+        _originalColor = val;
+        setColor(_originalColor);
+    }
+
+    void setOcupation(bool ocupation){
+        _ocupation=ocupation;
+    }
+
+    bool isOcupied(){
+        return _ocupation;
+    }
+
+    void isInCheck();
+
+    Color getPieceColor(){
+        if(isOcupied())
+            return currentPiece->getColor();
+        else
+            return Color::NOCOLOR;
+    }
+
+    int row;
+    int column;
+
+    Piece* currentPiece;
+
+private:
+    QBrush _brush;
+    bool _ocupation;
+    QColor _color, _originalColor;
 };
 
 #endif // POSITION_H

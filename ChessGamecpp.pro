@@ -8,6 +8,7 @@ CONFIG += c++11
 
 SOURCES += \
         Piece.cpp \
+        Position.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
