@@ -1,7 +1,7 @@
 #ifndef PIECE_H
 #define PIECE_H
-#include <QtWidgets/QGraphicsPixmapItem>
-#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsSceneMouseEvent>
 #include "Position.h"
 #include "Color.h"
 
@@ -37,7 +37,7 @@ public:
         this->_alive = alive;
     }
 
-    QList <Position*> moveLocation(){
+    QList <Position*> getLocation(){
         return _location;
     }
 
@@ -47,7 +47,7 @@ public:
 
     bool positionSetting(Position* pos);
 
-    bool _firstMove;
+    int moveCount;
 
 protected:
     Position* _pos;

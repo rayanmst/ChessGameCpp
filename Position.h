@@ -1,10 +1,11 @@
 #ifndef POSITION_H
 #define POSITION_H
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsRectItem>
+#include <QBrush>
+
 #include "Piece.h"
 #include "Color.h"
-#include <QtWidgets/QGraphicsSceneMouseEvent>
-#include <QBrush>
-#include <QtWidgets/QGraphicsRectItem>
 
 class Piece;
 class Position: public QGraphicsRectItem{
@@ -46,9 +47,13 @@ public:
 
     Color getPieceColor(){
         if(isOcupied())
-            return currentPiece->getColor();
+            return _pColor;
         else
             return Color::NOCOLOR;
+    }
+
+    void setPieceColor(Color color){
+        _pColor = color;
     }
 
     int row;
@@ -59,6 +64,7 @@ public:
 private:
     QBrush _brush;
     bool _ocupation;
+    Color _pColor;
     QColor _color, _originalColor;
 };
 

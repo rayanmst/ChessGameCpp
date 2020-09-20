@@ -8,6 +8,7 @@ Position::Position(QGraphicsItem* parent): QGraphicsRectItem(parent){
     _brush.setStyle(Qt::SolidPattern);
     setZValue(-1);
     setOcupation(false);
+    setPieceColor(Color::NOCOLOR);
     currentPiece = NULL;
 }
 
@@ -24,7 +25,7 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
         }
 
         //Remoção da peça comida
-        QList <Position*> newLoc = game->pieceToMove->moveLocation();
+        QList <Position*> newLoc = game->pieceToMove->getLocation();
 
         //Verifica se a posição final está dentro das regras
         int check = 0;
@@ -36,7 +37,7 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
         if(!check) return;
 
         game->pieceToMove->decolor();
-        game->pieceToMove->_firstMove=false;
+        game->pieceToMove->moveCount++;
 
         //Retirando a peça inimiga do local
         if(this->isOcupied()){
@@ -68,7 +69,7 @@ void Position::isInCheck(){
         if(k) continue;
         pList[i]->possibleMoves();
         pList[i]->decolor();
-        QList <Position*> posList = pList[i]->moveLocation();
+        QList <Position*> posList = pList[i]->getLocation();
         for(int j = 0,n=posList.size();j<n;j++){
             King* g = dynamic_cast<King*>(posList[j]->currentPiece);
             if(g){
@@ -76,7 +77,7 @@ void Position::isInCheck(){
                 posList[j]->setColor(Qt::blue);
                 pList[i]->getPosition()->setColor(Qt::darkRed);
                 //Exibino a mensagem de Check
-                if(!game->check->isVisible){
+                if(!game->check->isVisible()){
                     game->check->setVisible(true);
                 } else{
                     posList[j]->resetColor();

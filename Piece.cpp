@@ -4,7 +4,7 @@
 
 extern ChessGame *game;
 Piece::Piece(Color color, QGraphicsItem *parent): QGraphicsPixmapItem(parent){
-    _color = color; _alive = true; _firstMove = true;
+    _color = color; _alive = true; moveCount=0;
 }
 
 void Piece::mousePressEvent(QGraphicsSceneMouseEvent *e){
