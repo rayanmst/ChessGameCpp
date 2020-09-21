@@ -3,8 +3,7 @@
 extern ChessGame* g;
 void King::possibleMoves(){
     _location.clear();
-    Position* p = this->getPosition();
-    int kRow = p->row; int kCol = p->column;
+    int kRow = this->getPosition()->row; int kCol = this->getPosition()->column;
     Color color = this->getColor();
 
     //Above
