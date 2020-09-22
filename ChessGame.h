@@ -10,7 +10,7 @@ class ChessGame: public QGraphicsView{
 public:
     ChessGame(QWidget* parent=0);
     void drawGraveyard(int x, int y, QColor color);
-    void drawBoard();
+    void drawChessBoard();
     void displayDead(Color color);
     void restInPeace(Piece* p);
 
@@ -21,18 +21,27 @@ public:
         _gScene->removeItem(item);
     }
 
-    Color getTurn(){
+    QString getTurn(){
         return _turn;
     }
-    void setTurn(Color color){
-        _turn=color;
+
+    Color getCTurn(){
+        return _cTurn;
+    }
+    void setTurn(QString turn){
+        _turn=turn;
+        if(turn == "WHITE")
+            _cTurn = Color::WHITE;
+        else
+            _cTurn = Color::BLACK;
     }
 
     void changeTurn(){
-        if(getTurn()== Color::BLACK)
-            setTurn(Color::WHITE);
+        if(getTurn()== "BLACK")
+            setTurn("WHITE");
         else
-            setTurn(Color::BLACK);
+            setTurn("BLACK");
+        _disp->setPlainText("Turn: " + getTurn());
     }
 
     void showMenu();
@@ -48,7 +57,8 @@ public:
 public slots:
     void start();
 private:
-    Color _turn;
+    QString _turn;
+    Color _cTurn;
     QGraphicsScene* _gScene;
     Board* _board;
     QList <Piece*> _wDead;

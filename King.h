@@ -13,9 +13,9 @@ public:
 
     void setImage(){
         if(this->_color == Color::BLACK){
-            setPixmap(QPixmap(":/images/bKing"));
+            setPixmap(QPixmap("C:\\Qt2\\ChessGameCpp\\Images\\bKing"));
         } else
-            setPixmap(QPixmap(":/images/wKing"));
+            setPixmap(QPixmap("C:\\Qt2\\ChessGameCpp\\Images\\wKing"));
     }
 
     void possibleMoves();

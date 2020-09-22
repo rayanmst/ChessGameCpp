@@ -1,11 +1,16 @@
-#include "mainwindow.h"
-
+#include "ChessGame.h"
+#include "Board.h"
 #include <QApplication>
+
+ChessGame* g;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    g = new ChessGame();
+    g->drawChessBoard();
+    g->start();
+    g->show();
+
     return a.exec();
 }

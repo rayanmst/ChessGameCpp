@@ -2,30 +2,31 @@
 #include "ChessGame.h"
 #include "King.h"
 
-extern ChessGame *game;
+extern ChessGame *g;
 Piece::Piece(Color color, QGraphicsItem *parent): QGraphicsPixmapItem(parent){
     _color = color; _alive = true; moveCount=0;
 }
 
 void Piece::mousePressEvent(QGraphicsSceneMouseEvent *e){
     //Removendo selecao da peca
-    if(game->pieceToMove){
-        game->pieceToMove = this;
+    if(this == g->pieceToMove){
+        g->pieceToMove = this;
         this->getPosition()->resetColor();
-        game->pieceToMove = NULL;
+        this->decolor();
+        g->pieceToMove = NULL;
         return;
     }
     //Verifica se a peça ainda está viva ou se é do respectivo jogador
-    if((!getAlive()) || ((game->getTurn() != this->getColor()) && (!game->pieceToMove))){
+    if((!getAlive()) || ((g->getCTurn() != this->getColor()) && (!g->pieceToMove))){
         return;
     }
 
     //Selecionando a peca
-    if(!game->pieceToMove){
-        game->pieceToMove=this;
+    if(!g->pieceToMove){
+        g->pieceToMove=this;
         this->getPosition()->setColor(Qt::green);
         this->possibleMoves();
-    } else if(this->getColor() != game->pieceToMove->getColor()){
+    } else if(this->getColor() != g->pieceToMove->getColor()){
         this->getPosition()->mousePressEvent(e);
     }
 }

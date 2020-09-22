@@ -2,7 +2,7 @@
 #include "ChessGame.h"
 #include "King.h"
 
-extern ChessGame *game;
+extern ChessGame *g;
 Position::Position(QGraphicsItem* parent): QGraphicsRectItem(parent){
     setRect(0,0,100,100);
     _brush.setStyle(Qt::SolidPattern);
@@ -13,19 +13,19 @@ Position::Position(QGraphicsItem* parent): QGraphicsRectItem(parent){
 }
 
 void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
-    if(currentPiece == game->pieceToMove && currentPiece){
+    if(currentPiece == g->pieceToMove && currentPiece){
         currentPiece->mousePressEvent(e);
         return;
     }
 
-    if(game->pieceToMove){
+    if(g->pieceToMove){
         //Verifica se é da mesma cor
-        if(this->getPieceColor() == game->pieceToMove->getColor()){
+        if(this->getPieceColor() == g->pieceToMove->getColor()){
             return;
         }
 
         //Remoção da peça comida
-        QList <Position*> newLoc = game->pieceToMove->getLocation();
+        QList <Position*> newLoc = g->pieceToMove->getLocation();
 
         //Verifica se a posição final está dentro das regras
         int check = 0;
@@ -36,24 +36,24 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
         }
         if(!check) return;
 
-        game->pieceToMove->decolor();
-        game->pieceToMove->moveCount++;
+        g->pieceToMove->decolor();
+        g->pieceToMove->moveCount++;
 
         //Retirando a peça inimiga do local
         if(this->isOcupied()){
             this->currentPiece->setAlive(false);
             this->currentPiece->setPosition(NULL);
-            game->restInPeace(this->currentPiece);
+            g->restInPeace(this->currentPiece);
         }
 
         //Novos parâmetros da peça movida
-        game->pieceToMove->getPosition()->setOcupation(false);
-        game->pieceToMove->getPosition()->currentPiece = NULL;
-        game->pieceToMove->getPosition()->resetColor();
-        placePiece(game->pieceToMove);
+        g->pieceToMove->getPosition()->setOcupation(false,NULL);
+        g->pieceToMove->getPosition()->currentPiece = NULL;
+        g->pieceToMove->getPosition()->resetColor();
+        placePiece(g->pieceToMove);
 
-        game->pieceToMove = NULL;
-        game->changeTurn();
+        g->pieceToMove = NULL;
+        g->changeTurn();
         isInCheck();
     }
     else if(this->isOcupied()){
@@ -61,9 +61,16 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
     }
 }
 
+void Position::placePiece(Piece *p){
+    p->setPos(x()+50 - p->pixmap().width()/2,y()+50 - p->pixmap().width()/2);
+    p->setPosition(this);
+    setOcupation(true,p);
+    currentPiece = p;
+}
+
 void Position::isInCheck(){
     int c=0;
-    QList <Piece*> pList = game->alivePiece;
+    QList <Piece*> pList = g->alivePiece;
     for(int i=0,n=pList.size();i<n;i++){
         King* k = dynamic_cast<King*>(pList[i]);
         if(k) continue;
@@ -71,18 +78,18 @@ void Position::isInCheck(){
         pList[i]->decolor();
         QList <Position*> posList = pList[i]->getLocation();
         for(int j = 0,n=posList.size();j<n;j++){
-            King* g = dynamic_cast<King*>(posList[j]->currentPiece);
-            if(g){
-                if(g->getColor()==pList[i]->getColor()) continue;
+            King* q = dynamic_cast<King*>(posList[j]->currentPiece);
+            if(q){
+                if(q->getColor()==pList[i]->getColor()) continue;
                 posList[j]->setColor(Qt::blue);
                 pList[i]->getPosition()->setColor(Qt::darkRed);
-                //Exibino a mensagem de Check
-                if(!game->check->isVisible()){
-                    game->check->setVisible(true);
+                //Exibindo a mensagem de Check
+                if(!g->check->isVisible()){
+                    g->check->setVisible(true);
                 } else{
                     posList[j]->resetColor();
                     pList[i]->getPosition()->resetColor();
-                    game->gameOver();
+                    g->gameOver();
                 }
                 c++;
             }
@@ -90,9 +97,18 @@ void Position::isInCheck(){
 
     }
     if(!c){
-        game->check->setVisible(false);
+        g->check->setVisible(false);
         for(int i=0,n=pList.size();i<n;i++){
             pList[i]->getPosition()->resetColor();
         }
     }
+}
+
+void Position::setOcupation(bool ocupation,Piece* p){
+    _ocupation=ocupation;
+    if(ocupation){
+        Color c = p->getColor();
+        setPieceColor(c);
+    } else
+        setPieceColor(Color::NOCOLOR);
 }

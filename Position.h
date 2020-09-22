@@ -3,7 +3,6 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsRectItem>
 #include <QBrush>
-
 #include "Piece.h"
 #include "Color.h"
 
@@ -35,9 +34,7 @@ public:
         setColor(_originalColor);
     }
 
-    void setOcupation(bool ocupation){
-        _ocupation=ocupation;
-    }
+    void setOcupation(bool ocupation,Piece* p=0);
 
     bool isOcupied(){
         return _ocupation;
