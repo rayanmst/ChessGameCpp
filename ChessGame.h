@@ -44,9 +44,10 @@ public:
         _disp->setPlainText("Turn: " + getTurn());
     }
 
-    void showMenu();
+    void showInitMenu();
     void gameOver();
     void removeAll();
+    void showEndMenu();
 
 
     Piece *pieceToMove;

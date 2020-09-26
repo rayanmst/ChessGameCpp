@@ -25,11 +25,17 @@ void Board:: drawBoard(int x, int y){
 void Board::setBlack(){
     Piece* p;
     Color c = Color::BLACK;
-    for(int i =0;i<8;i++){
-        p = new King(c);
+    for(int i=0;i<4;i++){
+        p = new Pawn(c);
         _bPieces.append(p);
     }
-    for(int i =0;i<8;i++){
+    p = new King(c);
+    _bPieces.append(p);
+    for(int i=5;i<8;i++){
+        p = new Pawn(c);
+        _bPieces.append(p);
+    }
+    for(int i=0;i<8;i++){
         p = new Pawn(c);
         _bPieces.append(p);
     }
@@ -42,10 +48,17 @@ void Board::setWhite(){
         p = new Pawn(c);
         _wPieces.append(p);
     }
-    for(int i=0;i<8;i++){
-        p = new King(c);
+    for(int i=0;i<4;i++){
+        p = new Pawn(c);
         _wPieces.append(p);
     }
+    p = new King(c);
+    _wPieces.append(p);
+    for(int i=5;i<8;i++){
+        p = new Pawn(c);
+        _wPieces.append(p);
+    }
+
 
 }
 void Board::addPieces(){
@@ -65,6 +78,34 @@ void Board::addPieces(){
                 g->alivePiece.append(_wPieces[h]);
                 g->addToScene(_wPieces[h]);
                 h++;
+            }
+        }
+    }
+}
+
+void Board::reset(){
+    int k = 0, h=0;
+    for(int i = 0;i<8;i++){
+        for(int j = 0; j<8; j++){
+            Position* p = g->chessBoard[i][j];
+            p->setOcupation(false);
+            p->setPieceColor(Color::NOCOLOR);
+            p->currentPiece = NULL;
+            if(i<2){
+                p->placePiece(_bPieces[k]);
+                _bPieces[k]->setAlive(true);
+                _bPieces[k]->moveCount = 0;
+                g->alivePiece.append(_bPieces[k]);
+                k++;
+
+            }
+            if(i>5){
+                p->placePiece(_wPieces[h]);
+                _wPieces[h]->setAlive(true);
+                _wPieces[h]->moveCount = 0;
+                g->alivePiece.append(_wPieces[h]);
+                h++;
+
             }
         }
     }

@@ -6,10 +6,10 @@
 ChessGame::ChessGame(QWidget* parent):QGraphicsView(parent){
     //Create Scene
     _gScene = new QGraphicsScene();
-    _gScene->setSceneRect(0,0,1400,870);
+    _gScene->setSceneRect(0,0,1400,850);
 
     //Build the view
-    setFixedSize(1400,870);
+    setFixedSize(1400,850);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setScene(_gScene);
@@ -29,9 +29,9 @@ ChessGame::ChessGame(QWidget* parent):QGraphicsView(parent){
 
     //Check
     check = new QGraphicsTextItem();
-    check->setPos(width()/2-100,728);
+    check->setPos(width()/2-100,850);
     check->setZValue(4);
-    check->setDefaultTextColor(Qt::white);
+    check->setDefaultTextColor(Qt::red);
     check->setFont(QFont("",18));
     check->setPlainText("CHECK!");
     check->setVisible(false);
@@ -99,12 +99,20 @@ void ChessGame::restInPeace(Piece* p){
 
 }
 
-void ChessGame::showMenu(){
+void ChessGame::showInitMenu(){
+
+}
+
+void ChessGame::showEndMenu(){
 
 }
 
 void ChessGame::gameOver(){
-
+    //removeAll();
+    setTurn("WHITE");
+    alivePiece.clear();
+    _board->reset();
+    showEndMenu();
 }
 
 void ChessGame::removeAll(){
