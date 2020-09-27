@@ -8,9 +8,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     g = new ChessGame();
+    g->show();
     g->drawChessBoard();
     g->start();
-    g->show();
 
     return a.exec();
 }

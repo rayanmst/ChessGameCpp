@@ -10,9 +10,8 @@ Piece::Piece(Color color, QGraphicsItem *parent): QGraphicsPixmapItem(parent){
 void Piece::mousePressEvent(QGraphicsSceneMouseEvent *e){
     //Removendo selecao da peca
     if(this == g->pieceToMove){
-        g->pieceToMove = this;
-        this->getPosition()->resetColor();
-        this->decolor();
+        g->pieceToMove->getPosition()->resetColor();
+        g->pieceToMove->decolor();
         g->pieceToMove = NULL;
         return;
     }
@@ -23,9 +22,11 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *e){
 
     //Selecionando a peca
     if(!g->pieceToMove){
-        g->pieceToMove=this;
+        g->pieceToMove = this;
         this->getPosition()->setColor(Qt::green);
         this->possibleMoves();
+
+      //Consuming enemy
     } else if(this->getColor() != g->pieceToMove->getColor()){
         this->getPosition()->mousePressEvent(e);
     }

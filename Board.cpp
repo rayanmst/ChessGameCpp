@@ -6,7 +6,7 @@
 
 extern ChessGame* g;
 void Board:: drawBoard(int x, int y){
-    int DELTA = 100;
+    int DELTA = 82;
     for(int i=0;i<8;i++){
         for(int j=0;j<8;j++){
             Position* p = new Position();
@@ -66,14 +66,14 @@ void Board::addPieces(){
         for(int j=0;j<8;j++){
             Position* p = g->chessBoard[i][j];
             if(i<2){
-                static int k=0;
+                static int k;
                 p->placePiece(_bPieces[k]);
                 g->alivePiece.append(_bPieces[k]);
                 g->addToScene(_bPieces[k]);
                 k++;
             }
             if(i>5){
-                static int h=0;
+                static int h;
                 p->placePiece(_wPieces[h]);
                 g->alivePiece.append(_wPieces[h]);
                 g->addToScene(_wPieces[h]);
@@ -84,27 +84,27 @@ void Board::addPieces(){
 }
 
 void Board::reset(){
-    int k = 0, h=0;
+    int k = 0; int h = 0;
     for(int i = 0;i<8;i++){
         for(int j = 0; j<8; j++){
             Position* p = g->chessBoard[i][j];
             p->setOcupation(false);
             p->setPieceColor(Color::NOCOLOR);
             p->currentPiece = NULL;
-            if(i<2){
+            if(i < 2) {
+
                 p->placePiece(_bPieces[k]);
                 _bPieces[k]->setAlive(true);
                 _bPieces[k]->moveCount = 0;
-                g->alivePiece.append(_bPieces[k]);
-                k++;
+                g->alivePiece.append(_bPieces[k++]);
 
             }
-            if(i>5){
+            if(i > 5) {
+
                 p->placePiece(_wPieces[h]);
                 _wPieces[h]->setAlive(true);
                 _wPieces[h]->moveCount = 0;
-                g->alivePiece.append(_wPieces[h]);
-                h++;
+                g->alivePiece.append(_wPieces[h++]);
 
             }
         }

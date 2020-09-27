@@ -4,7 +4,7 @@
 
 extern ChessGame *g;
 Position::Position(QGraphicsItem* parent): QGraphicsRectItem(parent){
-    setRect(0,0,100,100);
+    setRect(0,0,82,82);
     _brush.setStyle(Qt::SolidPattern);
     setZValue(-1);
     setOcupation(false);
@@ -34,7 +34,7 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
                 check++;
             }
         }
-        if(!check) return;
+        if(check==0) return;
 
         g->pieceToMove->decolor();
         g->pieceToMove->moveCount++;
@@ -47,11 +47,10 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
         }
 
         //Novos parâmetros da peça movida
-        g->pieceToMove->getPosition()->setOcupation(false,NULL);
+        g->pieceToMove->getPosition()->setOcupation(false);
         g->pieceToMove->getPosition()->currentPiece = NULL;
         g->pieceToMove->getPosition()->resetColor();
         placePiece(g->pieceToMove);
-
         g->pieceToMove = NULL;
         g->changeTurn();
         isInCheck();
@@ -62,7 +61,7 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
 }
 
 void Position::placePiece(Piece *p){
-    p->setPos(x()+50 - p->pixmap().width()/2,y()+50 - p->pixmap().width()/2);
+    p->setPos(x()+41 - p->pixmap().width()/2,y()+41 - p->pixmap().width()/2);
     p->setPosition(this);
     setOcupation(true,p);
     currentPiece = p;
@@ -89,6 +88,9 @@ void Position::isInCheck(){
                 } else{
                     posList[j]->resetColor();
                     pList[i]->getPosition()->resetColor();
+                    if(q->getColor() == Color::BLACK) g->setWinner(Color::WHITE);
+                    else g->setWinner(Color::BLACK);
+                    g->check->setVisible(false);
                     g->gameOver();
                 }
                 c++;

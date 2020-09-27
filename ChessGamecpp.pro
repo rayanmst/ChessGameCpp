@@ -11,6 +11,7 @@ CONFIG += c++11
 SOURCES += \
     Bishop.cpp \
     Board.cpp \
+    Button.cpp \
     ChessGame.cpp \
     King.cpp \
     Knight.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 HEADERS += \
     Bishop.h \
     Board.h \
+    Button.h \
     ChessGame.h \
     Color.h \
     King.h \
@@ -39,3 +41,6 @@ FORMS +=
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    images.qrc

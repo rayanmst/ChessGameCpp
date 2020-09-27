@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="bBishop.png">Images/bBishop.png</file>
+        <file alias="bHorse.png">Images/bHorse.png</file>
+        <file alias="bKing.png">Images/bKing.png</file>
+        <file alias="bPawn.png">Images/bPawn.png</file>
+        <file alias="bQueen.png">Images/bQueen.png</file>
+        <file alias="bRook.png">Images/bRook.png</file>
+        <file alias="wBishop.png">Images/wBishop.png</file>
+        <file alias="wHorse.png">Images/wHorse.png</file>
+        <file alias="wKing.png">Images/wKing.png</file>
+        <file alias="wPawn.png">Images/wPawn.png</file>
+        <file alias="wQueen.png">Images/wQueen.png</file>
+        <file alias="wRook.png">Images/wRook.png</file>
+    </qresource>
+</RCC>

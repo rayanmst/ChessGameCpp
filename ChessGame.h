@@ -11,7 +11,7 @@ public:
     ChessGame(QWidget* parent=0);
     void drawGraveyard(int x, int y, QColor color);
     void drawChessBoard();
-    void displayDead(Color color);
+    void displayDead(Color color, bool end=false);
     void restInPeace(Piece* p);
 
     void addToScene(QGraphicsItem* item){
@@ -43,7 +43,15 @@ public:
             setTurn("BLACK");
         _disp->setPlainText("Turn: " + getTurn());
     }
+    void setWinner(Color c){
+        if(c == Color::BLACK){
+            _winner = "Black Won!";
+        }
+        else
+            _winner = "White Won!";
+    }
 
+    void checkMate();
     void showInitMenu();
     void gameOver();
     void removeAll();
@@ -57,8 +65,10 @@ public:
 
 public slots:
     void start();
+    void restart();
 private:
     QString _turn;
+    QString _winner;
     Color _cTurn;
     QGraphicsScene* _gScene;
     Board* _board;

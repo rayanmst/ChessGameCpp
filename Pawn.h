@@ -11,14 +11,12 @@ public:
 
     void setImage(){
         if(_color == Color::BLACK){
-            setPixmap(QPixmap("C:\\Qt2\\ChessGameCpp\\Images\\bPawn.png"));
+            setPixmap(QPixmap(":/images/bPawn.png"));
         } else
-            setPixmap(QPixmap("C:\\Qt2\\ChessGameCpp\\Images\\wPawn.png"));
+            setPixmap(QPixmap(":/images/wPawn.png"));
     }
 
     void possibleMoves();
-private:
-
 };
 
 #endif // PAWN_H
