@@ -36,7 +36,7 @@ ChessGame::ChessGame(QWidget* parent):QGraphicsView(parent){
     check->setPlainText("CHECK!");
     check->setVisible(false);
     setTurn("WHITE");
-    }
+}
 
 void ChessGame::drawGraveyard(int x, int y, QColor color){
     _gravekeeper = new QGraphicsRectItem(x,y,355,768);
@@ -56,72 +56,77 @@ void ChessGame::drawChessBoard(){
 
 }
 
-void ChessGame::displayDead(Color color, bool end){
-    int delta = 55, j = 0, k = 0;
-    if(!end){
-        if(color == Color::WHITE){
-            for(int i = 0, n = _wDead.size();i<n;i++){
-                if(j==4){
-                    k++; j=0;
-                }
-                _wDead[i]->setPos(40+delta*j,100+delta*2*k);
-                j++;
+void ChessGame::displayDead(Color color){
+    int delta = 70, j = 0, k = 0;
+    if(color == Color::WHITE){
+        for(int i = 0, n = _wDead.size();i<n;i++){
+            if(j==4){
+                k++; j=0;
             }
-        } else {
-            for(int i = 0, n = _bDead.size(); i<n;i++){
-                if(j==4){
-                    k++; j=0;
-                }
-                _bDead[i]->setPos(1140+delta*j,100+delta*2*k);
-                j++;
-            }
+            _wDead[i]->setPos(30+delta*j,100+delta*2*k);
+            j++;
         }
     } else {
-        QList <Piece*> dead;
-        if(color == Color::WHITE) dead = _wDead;
-        else dead = _bDead;
-        for(int i = 0, n = dead.size();i<n;i++){
-            if(j==8){
-                k++;j=0;
+        for(int i = 0, n = _bDead.size(); i<n;i++){
+            if(j==4){
+                k++; j=0;
             }
-            dead[i]->setPos(355+delta*j, 200+delta*2*k);
+            _bDead[i]->setPos(1030+delta*j,100+delta*2*k);
             j++;
         }
     }
+
 }
 
 void ChessGame::restInPeace(Piece* p){
     if(p->getColor() == Color::BLACK){
         _bDead.append(p);
+        King *king = dynamic_cast<King*>(p);
+        if(king){
+            _winner = "White Won!";
+            gameOver();
+        }
         displayDead(Color::BLACK);
     } else{
         _wDead.append(p);
+        King *king = dynamic_cast<King*>(p);
+        if(king){
+            _winner = "Black Won!";
+            gameOver();
+        }
         displayDead(Color::WHITE);
     }
-    checkMate();
     alivePiece.removeAll(p);
 }
 
-void ChessGame::checkMate(){
-    for(int i=0,n=_bDead.size();i<n;i++){
-       King *king = dynamic_cast<King*>(_bDead[i]);
-       if(king){
-            _winner = "White Won!";
-            gameOver();
-       }
-    }
-
-    for(int i=0,n=_wDead.size();i<n;i++){
-       King *king = dynamic_cast<King*>(_bDead[i]);
-       if(king){
-            _winner = "Black Won!";
-            gameOver();
-       }
-    }
-}
-
 void ChessGame::showInitMenu(){
+    QGraphicsPixmapItem *p = new QGraphicsPixmapItem();
+    p->setPixmap(QPixmap(":/images/lIcon.png"));
+    p->setPos(420,150);
+    addToScene(p); _itens.append(p);
+    QGraphicsPixmapItem *p1 = new QGraphicsPixmapItem();
+    p1->setPixmap(QPixmap(":/images/rIcon.png"));
+    p1->setPos(830,150);
+    addToScene(p1); _itens.append(p1);
+    QGraphicsTextItem *chext = new QGraphicsTextItem("Chess C++");
+    chext->setFont(QFont("arial", 50));
+    int xPos = width()/2 - chext->boundingRect().width()/2;
+    chext->setPos(xPos,150);
+    addToScene(chext); _itens.append(chext);
 
+    Button* pBtn = new Button("Play");
+    int pxPos = width()/2 - pBtn->boundingRect().width()/2;
+    pBtn->setPos(pxPos,300);
+    connect(pBtn,SIGNAL(clicked()), this, SLOT(start()));
+    addToScene(pBtn); _itens.append(pBtn);
+
+    Button* qBtn = new Button("Quit");
+    int qxPos = width()/2 - qBtn->boundingRect().width()/2;
+    qBtn->setPos(qxPos,375);
+    connect(qBtn,SIGNAL(clicked()), this, SLOT(close()));
+    addToScene(qBtn); _itens.append(qBtn);
+
+    drawChessBoard();
 }
 
 void ChessGame::showEndMenu(){
@@ -137,14 +142,14 @@ void ChessGame::showEndMenu(){
     _itens.append(winner);
     winner->setVisible(true);
 
-    //Reset button
+    /*/Reset button
     Button *rst = new Button("Reset");
     int rxPos = width()/2 - rst->boundingRect().width()/2,
         ryPos = 400;
     rst->setPos(rxPos,ryPos);
     connect(rst, SIGNAL(clicked()),this,SLOT(restart()));
     addToScene(rst);
-    _itens.append(rst);
+    _itens.append(rst);*/
 
     //Quit Button
     Button* quit = new Button("Quit");
@@ -198,5 +203,6 @@ void ChessGame::start(){
 }
 
 void ChessGame::restart(){
+    drawChessBoard();
 
 }

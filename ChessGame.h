@@ -8,10 +8,16 @@
 class ChessGame: public QGraphicsView{
     Q_OBJECT
 public:
+
+    Piece *pieceToMove;
+    Position *chessBoard[8][8];
+    QGraphicsTextItem* check;
+    QList <Piece*> alivePiece;
+
     ChessGame(QWidget* parent=0);
     void drawGraveyard(int x, int y, QColor color);
     void drawChessBoard();
-    void displayDead(Color color, bool end=false);
+    void displayDead(Color color);
     void restInPeace(Piece* p);
 
     void addToScene(QGraphicsItem* item){
@@ -51,17 +57,11 @@ public:
             _winner = "White Won!";
     }
 
-    void checkMate();
     void showInitMenu();
+    void showEndMenu();
     void gameOver();
     void removeAll();
-    void showEndMenu();
 
-
-    Piece *pieceToMove;
-    Position *chessBoard[8][8];
-    QGraphicsTextItem* check;
-    QList <Piece*> alivePiece;
 
 public slots:
     void start();

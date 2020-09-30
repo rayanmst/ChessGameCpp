@@ -29,6 +29,7 @@ HEADERS += \
     ChessGame.h \
     Color.h \
     King.h \
+    Knight.h \
     Pawn.h \
     Piece.h \
     Position.h \

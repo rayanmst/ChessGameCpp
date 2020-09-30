@@ -23,8 +23,8 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *e){
     //Selecionando a peca
     if(!g->pieceToMove){
         g->pieceToMove = this;
-        this->getPosition()->setColor(Qt::green);
-        this->possibleMoves();
+        g->pieceToMove->getPosition()->setColor(Qt::green);
+        g->pieceToMove->possibleMoves();
 
       //Consuming enemy
     } else if(this->getColor() != g->pieceToMove->getColor()){
@@ -44,7 +44,7 @@ bool Piece::positionSetting(Position *pos){
         if(k){
             pos->setColor(Qt::blue);
         } else
-            pos->setColor(Qt::darkRed);
+            pos->setColor(Qt::red);
         return true;
     } else
         _location.last()->setColor(Qt::darkRed);

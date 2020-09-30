@@ -85,12 +85,13 @@ void Position::isInCheck(){
                 //Exibindo a mensagem de Check
                 if(!g->check->isVisible()){
                     g->check->setVisible(true);
-                } else{
+                } else {
+                    //Finalizando o jogo
                     posList[j]->resetColor();
                     pList[i]->getPosition()->resetColor();
+                    g->check->setVisible(false);
                     if(q->getColor() == Color::BLACK) g->setWinner(Color::WHITE);
                     else g->setWinner(Color::BLACK);
-                    g->check->setVisible(false);
                     g->gameOver();
                 }
                 c++;

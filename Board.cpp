@@ -3,6 +3,10 @@
 #include "ChessGame.h"
 #include "Pawn.h"
 #include "King.h"
+#include "Bishop.h"
+#include "Knight.h"
+#include "Rook.h"
+#include "Queen.h"
 
 extern ChessGame* g;
 void Board:: drawBoard(int x, int y){
@@ -25,16 +29,22 @@ void Board:: drawBoard(int x, int y){
 void Board::setBlack(){
     Piece* p;
     Color c = Color::BLACK;
-    for(int i=0;i<4;i++){
-        p = new Pawn(c);
-        _bPieces.append(p);
-    }
+    p = new Rook(c);
+    _bPieces.append(p);
+    p = new Knight(c);
+    _bPieces.append(p);
+    p = new Bishop(c);
+    _bPieces.append(p);
+    p = new Queen(c);
+    _bPieces.append(p);
     p = new King(c);
     _bPieces.append(p);
-    for(int i=5;i<8;i++){
-        p = new Pawn(c);
-        _bPieces.append(p);
-    }
+    p = new Bishop(c);
+    _bPieces.append(p);
+    p = new Knight(c);
+    _bPieces.append(p);
+    p = new Rook(c);
+    _bPieces.append(p);
     for(int i=0;i<8;i++){
         p = new Pawn(c);
         _bPieces.append(p);
@@ -44,21 +54,26 @@ void Board::setBlack(){
 void Board::setWhite(){
     Piece* p;
     Color c = Color::WHITE;
-    for(int i =0;i<8;i++){
+    for(int i=0;i<8;i++){
         p = new Pawn(c);
         _wPieces.append(p);
     }
-    for(int i=0;i<4;i++){
-        p = new Pawn(c);
-        _wPieces.append(p);
-    }
+    p = new Rook(c);
+    _wPieces.append(p);
+    p = new Knight(c);
+    _wPieces.append(p);
+    p = new Bishop(c);
+    _wPieces.append(p);
+    p = new Queen(c);
+    _wPieces.append(p);
     p = new King(c);
     _wPieces.append(p);
-    for(int i=5;i<8;i++){
-        p = new Pawn(c);
-        _wPieces.append(p);
-    }
-
+    p = new Bishop(c);
+    _wPieces.append(p);
+    p = new Knight(c);
+    _wPieces.append(p);
+    p = new Rook(c);
+    _wPieces.append(p);
 
 }
 void Board::addPieces(){
