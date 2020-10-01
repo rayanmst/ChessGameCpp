@@ -1,6 +1,7 @@
 #ifndef PAWN_H
 #define PAWN_H
 #include "Piece.h"
+#include <QDebug>
 #include "Color.h"
 
 class Pawn: public Piece{
@@ -17,6 +18,12 @@ public:
     }
 
     void possibleMoves();
+
+    bool isEnPassantVulnerable(Position* pos);
+
+   // void promotion();
+
+    bool enPassantVulnerable;
 };
 
 #endif // PAWN_H

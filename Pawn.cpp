@@ -1,5 +1,6 @@
 #include "Pawn.h"
 #include "ChessGame.h"
+#include <QDebug>
 
 extern ChessGame* g;
 void Pawn::possibleMoves(){
@@ -29,7 +30,7 @@ void Pawn::possibleMoves(){
             _location.append(g->chessBoard[pRow-1][pCol+1]);
             positionSetting(_location.last());
         }
-        //En Passant TODO
+
     }
     //Black Moves
     else {
@@ -52,11 +53,35 @@ void Pawn::possibleMoves(){
             _location.append(g->chessBoard[pRow+1][pCol+1]);
             positionSetting(_location.last());
         }
+    }
 
-        //En Passant TODO
+    //EnPassant
+    //Left
+    if(g->chessBoard[pRow][pCol-1]->isOcupied() && isEnPassantVulnerable(g->chessBoard[pRow][pCol-1])){
+        _location.append(g->chessBoard[pRow][pCol-1]);
+        _location.last()->setColor(Qt::yellow);
+    }
+    if(g->chessBoard[pRow][pCol+1]->isOcupied() && isEnPassantVulnerable(g->chessBoard[pRow][pCol+1])){
+        _location.append(g->chessBoard[pRow][pCol+1]);
+        _location.last()->setColor(Qt::yellow);
     }
 
 
+}
 
+bool Pawn::isEnPassantVulnerable(Position* pos){
+    Pawn* pawn = dynamic_cast<Pawn*>(pos->currentPiece);
+    if(pawn) {
+        if(pawn->moveCount == 1 && (pawn->getLastMoved() == g->getTurnCount()-1)&& ((pos->row == 3 && pawn->getColor() == Color::BLACK) ||(pos->row == 4 && pawn->getColor() == Color::WHITE))){
+            pawn->enPassantVulnerable = true;
+        } else
+            pawn->enPassantVulnerable = false;
+        return pawn->enPassantVulnerable;
+    }
+    return false;
+}
+/*
+void Pawn::promotion(){
 
 }
+*/

@@ -105,7 +105,7 @@ void King::possibleMoves(){
                  test2 = g->chessBoard[kRow][kCol+2]->isOcupied();
             if(!test1 && !test2){
                 _location.append(g->chessBoard[kRow][kCol+2]);
-                g->chessBoard[kRow][kCol+2]->setColor(Qt::darkRed);
+                g->chessBoard[kRow][kCol+2]->setColor(Qt::yellow);
             }
         }
 
@@ -116,7 +116,7 @@ void King::possibleMoves(){
                  test3 = g->chessBoard[kRow][kCol-1]->isOcupied();
             if(!test1 && !test2 && !test3){
                 _location.append(g->chessBoard[kRow][kCol-2]);
-                g->chessBoard[kRow][kCol-2]->setColor(Qt::darkRed);
+                g->chessBoard[kRow][kCol-2]->setColor(Qt::yellow);
             }
         }
     }

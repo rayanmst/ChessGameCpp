@@ -47,13 +47,23 @@ public:
 
     bool positionSetting(Position* pos);
 
+    void setLastMoved(int val){
+        _lastMoved = val;
+    }
+
+    int getLastMoved(){
+        return _lastMoved;
+    }
+
     int moveCount;
+
 
 protected:
     Position* _pos;
     Color _color;
     bool _alive;
     QList <Position*> _location;
+    int _lastMoved;
 
 };
 

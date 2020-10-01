@@ -48,6 +48,7 @@ public:
         else
             setTurn("BLACK");
         _disp->setPlainText("Turn: " + getTurn());
+        _turnCount++;
     }
     void setWinner(Color c){
         if(c == Color::BLACK){
@@ -55,6 +56,14 @@ public:
         }
         else
             _winner = "White Won!";
+    }
+
+    void resetTurnCount(){
+        _turnCount = 1;
+    }
+
+    int getTurnCount(){
+        return _turnCount;
     }
 
     void showInitMenu();
@@ -69,6 +78,7 @@ public slots:
 private:
     QString _turn;
     QString _winner;
+    int _turnCount;
     Color _cTurn;
     QGraphicsScene* _gScene;
     Board* _board;

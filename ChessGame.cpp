@@ -36,6 +36,7 @@ ChessGame::ChessGame(QWidget* parent):QGraphicsView(parent){
     check->setPlainText("CHECK!");
     check->setVisible(false);
     setTurn("WHITE");
+    resetTurnCount();
 }
 
 void ChessGame::drawGraveyard(int x, int y, QColor color){

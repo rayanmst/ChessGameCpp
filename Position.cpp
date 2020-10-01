@@ -1,6 +1,7 @@
 #include "Position.h"
 #include "ChessGame.h"
 #include "King.h"
+#include "Pawn.h"
 
 extern ChessGame *g;
 Position::Position(QGraphicsItem* parent): QGraphicsRectItem(parent){
@@ -38,9 +39,24 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
 
         g->pieceToMove->decolor();
         g->pieceToMove->moveCount++;
+        g->pieceToMove->setLastMoved(g->getTurnCount());
 
-        //Retirando a peça inimiga do local
-        if(this->isOcupied()){
+        Pawn* pawn = dynamic_cast<Pawn*>(g->pieceToMove);
+        Pawn* enemy = dynamic_cast<Pawn*>(this->currentPiece);
+        bool eps=false; Color c;
+        if(pawn && enemy){
+            if(enemy->isEnPassantVulnerable(this)){
+                eps = true;
+                this->currentPiece->setAlive(false);
+                this->currentPiece->setPosition(NULL);
+                g->restInPeace(this->currentPiece);
+                if(pawn->getColor()==Color::BLACK){
+                    c = Color::BLACK;
+                } else{
+                    c = Color::WHITE;
+                }
+            }
+        } else if(this->isOcupied()){
             this->currentPiece->setAlive(false);
             this->currentPiece->setPosition(NULL);
             g->restInPeace(this->currentPiece);
@@ -50,7 +66,16 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
         g->pieceToMove->getPosition()->setOcupation(false);
         g->pieceToMove->getPosition()->currentPiece = NULL;
         g->pieceToMove->getPosition()->resetColor();
-        placePiece(g->pieceToMove);
+        if(eps){
+            if(c == Color::BLACK){
+                g->chessBoard[this->row+1][this->column]->placePiece(g->pieceToMove);
+            } else{
+                g->chessBoard[this->row-1][this->column]->placePiece(g->pieceToMove);
+            }
+        }else{
+            placePiece(g->pieceToMove);
+        }
+
         g->pieceToMove = NULL;
         g->changeTurn();
         isInCheck();
@@ -66,6 +91,8 @@ void Position::placePiece(Piece *p){
     setOcupation(true,p);
     currentPiece = p;
 }
+
+
 
 void Position::isInCheck(){
     int c=0;
