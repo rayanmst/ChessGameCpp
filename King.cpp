@@ -1,4 +1,5 @@
 #include "King.h"
+#include "Rook.h"
 
 extern ChessGame* g;
 void King::possibleMoves(){
@@ -96,4 +97,37 @@ void King::possibleMoves(){
         }
     }
 
+    //Castling SPM
+    if(moveCount == 0 && !(g->check->isVisible())){
+        //KingSide Rook
+        if(testCastling(g->chessBoard[kRow][kCol+3])){
+            bool test1 = g->chessBoard[kRow][kCol+1]->isOcupied(),
+                 test2 = g->chessBoard[kRow][kCol+2]->isOcupied();
+            if(!test1 && !test2){
+                _location.append(g->chessBoard[kRow][kCol+2]);
+                g->chessBoard[kRow][kCol+2]->setColor(Qt::darkRed);
+            }
+        }
+
+        //QueenSide Rook
+        if(testCastling(g->chessBoard[kRow][kCol-4])){
+            bool test1 = g->chessBoard[kRow][kCol-3]->isOcupied(),
+                 test2 = g->chessBoard[kRow][kCol-2]->isOcupied(),
+                 test3 = g->chessBoard[kRow][kCol-1]->isOcupied();
+            if(!test1 && !test2 && !test3){
+                _location.append(g->chessBoard[kRow][kCol-2]);
+                g->chessBoard[kRow][kCol-2]->setColor(Qt::darkRed);
+            }
+        }
+    }
+}
+bool King::testCastling(Position* pos){
+    if(!(pos->isOcupied())) return false;
+    Rook *rook = dynamic_cast<Rook *>(pos->currentPiece);
+    if(rook){
+        if(rook->moveCount == 0 && rook->getColor() == getColor()) return true;
+        return false;
+    } else{
+        return false;
+    }
 }
