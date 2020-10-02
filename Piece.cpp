@@ -8,30 +8,36 @@ Piece::Piece(Color color, QGraphicsItem *parent): QGraphicsPixmapItem(parent){
 }
 
 void Piece::mousePressEvent(QGraphicsSceneMouseEvent *e){
-    //Removendo selecao da peca
-    if(this == g->pieceToMove){
-        g->pieceToMove->getPosition()->resetColor();
-        g->pieceToMove->decolor();
-        g->pieceToMove = NULL;
-        return;
-    }
-    //Verifica se a peça ainda está viva ou se é do respectivo jogador
-    if((!getAlive()) || ((g->getCTurn() != this->getColor()) && (!g->pieceToMove))){
-        return;
-    }
+    if(e->button() == Qt::LeftButton){
+        if(g->selIsOpen){
+            g->selected = this;
+            return;
+            }
 
-    //Selecionando a peca
-    if(!g->pieceToMove){
-        g->pieceToMove = this;
-        g->pieceToMove->getPosition()->setColor(Qt::green);
-        g->pieceToMove->possibleMoves();
+        //Removendo selecao da peca
+        if(this == g->pieceToMove){
+            g->pieceToMove->getPosition()->resetColor();
+            g->pieceToMove->decolor();
+            g->pieceToMove = NULL;
+            return;
+        }
+        //Verifica se a peça ainda está viva ou se é do respectivo jogador
+        if((!getAlive()) || ((g->getCTurn() != this->getColor()) && (!g->pieceToMove))){
+            return;
+        }
 
-      //Consuming enemy
-    } else if(this->getColor() != g->pieceToMove->getColor()){
-        this->getPosition()->mousePressEvent(e);
+        //Selecionando a peca
+        if(!g->pieceToMove){
+            g->pieceToMove = this;
+            g->pieceToMove->getPosition()->setColor(Qt::green);
+            g->pieceToMove->possibleMoves();
+
+            //Consuming enemy
+        } else if(this->getColor() != g->pieceToMove->getColor()){
+            this->getPosition()->mousePressEvent(e);
+        }
     }
 }
-
 void Piece::decolor(){
     for(int i=0,n=_location.size();i<n;i++){
         _location[i]->resetColor();

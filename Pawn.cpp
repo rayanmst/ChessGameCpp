@@ -80,8 +80,4 @@ bool Pawn::isEnPassantVulnerable(Position* pos){
     }
     return false;
 }
-/*
-void Pawn::promotion(){
 
-}
-*/

@@ -7,7 +7,7 @@
 class Pawn: public Piece{
 public:
     Pawn(Color color, QGraphicsItem *parent=0):Piece(color,parent){
-        setImage();
+        setImage(); enPassantVulnerable = false;
     }
 
     void setImage(){
@@ -21,7 +21,6 @@ public:
 
     bool isEnPassantVulnerable(Position* pos);
 
-   // void promotion();
 
     bool enPassantVulnerable;
 };

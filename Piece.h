@@ -1,6 +1,7 @@
 #ifndef PIECE_H
 #define PIECE_H
 #include <QGraphicsPixmapItem>
+#include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
 #include "Position.h"
 #include "Color.h"
@@ -56,15 +57,12 @@ public:
     }
 
     int moveCount;
-
-
 protected:
     Position* _pos;
     Color _color;
     bool _alive;
     QList <Position*> _location;
     int _lastMoved;
-
 };
 
 

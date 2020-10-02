@@ -66,16 +66,31 @@ public:
         return _turnCount;
     }
 
+    void addToSelect(QGraphicsItem* item){
+        _select.append(item);
+    }
+
+    void removeToSelect(QGraphicsItem* item){
+        _select.removeAll(item);
+    }
+
     void showInitMenu();
     void showEndMenu();
     void gameOver();
     void removeAll();
 
+    void pawnPromotion(Piece* p);
+    QList <Piece*> options;
+    bool selIsOpen;
+    Piece* selected;
 
 public slots:
     void start();
     void restart();
+    void closeSel();
 private:
+    Piece* _promoted;
+    bool _end;
     QString _turn;
     QString _winner;
     int _turnCount;
@@ -85,8 +100,10 @@ private:
     QList <Piece*> _wDead;
     QList <Piece*> _bDead;
     QList <QGraphicsItem*> _itens;
+    QList <QGraphicsItem*> _select;
     QGraphicsRectItem* _gravekeeper;
     QGraphicsTextItem* _disp;
+
 };
 
 #endif // CHESSGAME_H

@@ -1,9 +1,17 @@
 #include "ChessGame.h"
+#include <QFont>
 #include <QPixmap>
 #include "King.h"
+#include "Queen.h"
+#include "Bishop.h"
+#include "Pawn.h"
+#include "Rook.h"
+#include "Knight.h"
 #include "Button.h"
 
+#include <QDebug>
 ChessGame::ChessGame(QWidget* parent):QGraphicsView(parent){
+    selIsOpen = false; selected = NULL; _end = false;
     //Create Scene
     _gScene = new QGraphicsScene();
     _gScene->setSceneRect(0,0,1366,768);
@@ -137,25 +145,25 @@ void ChessGame::showEndMenu(){
     QFont winnerFont("arial", 50);
     winner->setFont(winnerFont);
     int wxPos = width()/2 - winner->boundingRect().width()/2,
-        wyPos = 100;
+            wyPos = 100;
     winner->setPos(wxPos,wyPos);
     addToScene(winner);
     _itens.append(winner);
     winner->setVisible(true);
 
-    /*/Reset button
+    //Reset button
     Button *rst = new Button("Reset");
     int rxPos = width()/2 - rst->boundingRect().width()/2,
-        ryPos = 400;
+            ryPos = 400;
     rst->setPos(rxPos,ryPos);
     connect(rst, SIGNAL(clicked()),this,SLOT(restart()));
     addToScene(rst);
-    _itens.append(rst);*/
+    _itens.append(rst);
 
     //Quit Button
     Button* quit = new Button("Quit");
     int qxPos = width()/2 - quit->boundingRect().width()/2,
-        qyPos = 500;
+            qyPos = 500;
     quit->setPos(qxPos,qyPos);
     connect(quit, SIGNAL(clicked()),this,SLOT(close()));
     addToScene(quit);
@@ -164,6 +172,9 @@ void ChessGame::showEndMenu(){
 
 void ChessGame::gameOver(){
     removeAll();
+    _end = true;
+    check->setVisible(false);
+    _itens.clear();
     setTurn("WHITE");
     alivePiece.clear();
     _board->reset();
@@ -204,6 +215,107 @@ void ChessGame::start(){
 }
 
 void ChessGame::restart(){
+    for(int i=0,n=_itens.size();i<n;i++){
+        removeFromScene(_itens[i]);
+    }
     drawChessBoard();
+    //addToScene(_disp);
+    QGraphicsTextItem* wPiece = new QGraphicsTextItem();
+    wPiece->setPos(125,10);
+    wPiece->setZValue(1);
+    wPiece->setDefaultTextColor(Qt::white);
+    wPiece->setFont(QFont("",14));
+    wPiece->setPlainText("White Piece");
+    addToScene(wPiece);
 
+    QGraphicsTextItem* bPiece = new QGraphicsTextItem();
+    bPiece->setPos(1136,10);
+    bPiece->setZValue(1);
+    bPiece->setDefaultTextColor(Qt::black);
+    bPiece->setFont(QFont("",14));
+    bPiece->setPlainText("Black Piece");
+    addToScene(bPiece);
+    //addToScene(check);
+    _board->addPieces();
 }
+
+void ChessGame::closeSel(){
+    for(int i = 0, n = _select.size();i<n;i++){
+        removeFromScene(_select[i]);
+    }
+    _select.clear();
+    options.clear();
+    Position* pos = _promoted->getPosition();
+    removeFromScene(_promoted);
+    alivePiece.removeAll(_promoted);
+    pos->placePiece(selected);
+    alivePiece.append(selected);
+    addToScene(selected);
+    selIsOpen = false;
+}
+
+void ChessGame::pawnPromotion(Piece* p){
+    if(!_end){
+        _promoted = p;
+        selIsOpen = true;
+        QGraphicsRectItem* selection = new QGraphicsRectItem(355,200,656,210);
+        QGraphicsTextItem* selTxt = new QGraphicsTextItem("Select a piece");
+        selTxt->setPos(width()/2 - selTxt->boundingRect().width(),205);
+        selTxt->setZValue(4);
+        selTxt->setDefaultTextColor(Qt::black);
+        QFont selFont = QFont("",18);
+        selFont.setWeight(QFont::Bold);
+        selTxt->setFont(selFont);
+
+        addToScene(selTxt);_select.append(selTxt);
+        QBrush brush;
+
+        Piece *pa;
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(Qt::gray);
+        selection->setBrush(brush);
+        addToScene(selection); _select.append(selection);
+        if(p->getColor() == Color::BLACK){
+            pa = new Knight(Color::BLACK);
+            options.append(pa);
+            _select.append(pa);
+            pa = new Rook(Color::BLACK);
+            options.append(pa);
+            _select.append(pa);
+            pa = new Bishop(Color::BLACK);
+            options.append(pa);
+            _select.append(pa);
+            pa = new Queen(Color::BLACK);
+            options.append(pa);
+            _select.append(pa);
+        } else {
+
+            pa = new Knight(Color::WHITE);
+            options.append(pa);
+            _select.append(pa);
+            pa = new Rook(Color::WHITE);
+            options.append(pa);
+            _select.append(pa);
+            pa = new Bishop(Color::WHITE);
+            options.append(pa);
+            _select.append(pa);
+            pa = new Queen(Color::WHITE);
+            options.append(pa);
+            _select.append(pa);
+        }
+        selected = pa;
+        for(int i = 0, n = options.size(); i<n;i++){
+            options[i]->setPos(530+i*100 - p->pixmap().width()/2,250);
+            addToScene(options[i]);
+        }
+
+        Button* done = new Button("Done");
+        int dxPos = 686 - done->boundingRect().width()/2,
+                dyPos = 350;
+        done->setPos(dxPos,dyPos);
+        connect(done, SIGNAL(clicked()),this,SLOT(closeSel()));
+        addToScene(done);
+        _select.append(done);
+    }
+}
+
