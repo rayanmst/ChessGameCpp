@@ -74,6 +74,10 @@ public:
         _select.removeAll(item);
     }
 
+    void moveBox(int x, int y){
+        _rect->setPos(x,y);
+    }
+
     void showInitMenu();
     void showEndMenu();
     void gameOver();
@@ -89,21 +93,21 @@ public slots:
     void restart();
     void closeSel();
 private:
-    Piece* _promoted;
     bool _end;
-    QString _turn;
-    QString _winner;
-    int _turnCount;
     Color _cTurn;
-    QGraphicsScene* _gScene;
+    QString _turn;
     Board* _board;
+    int _turnCount;
+    QString _winner;
+    Piece* _promoted;
     QList <Piece*> _wDead;
     QList <Piece*> _bDead;
+    QGraphicsScene* _gScene;
+    QGraphicsRectItem* _rect;
+    QGraphicsTextItem* _disp;
     QList <QGraphicsItem*> _itens;
     QList <QGraphicsItem*> _select;
     QGraphicsRectItem* _gravekeeper;
-    QGraphicsTextItem* _disp;
-
 };
 
 #endif // CHESSGAME_H

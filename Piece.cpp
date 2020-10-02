@@ -11,6 +11,7 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *e){
     if(e->button() == Qt::LeftButton){
         if(g->selIsOpen){
             g->selected = this;
+            g->moveBox(this->x(),this->y());
             return;
             }
 

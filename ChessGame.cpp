@@ -258,6 +258,7 @@ void ChessGame::pawnPromotion(Piece* p){
     if(!_end){
         _promoted = p;
         selIsOpen = true;
+        _rect = new QGraphicsRectItem(0,0,100,100);
         QGraphicsRectItem* selection = new QGraphicsRectItem(355,200,656,210);
         QGraphicsTextItem* selTxt = new QGraphicsTextItem("Select a piece");
         selTxt->setPos(width()/2 - selTxt->boundingRect().width(),205);
@@ -275,40 +276,30 @@ void ChessGame::pawnPromotion(Piece* p){
         brush.setColor(Qt::gray);
         selection->setBrush(brush);
         addToScene(selection); _select.append(selection);
-        if(p->getColor() == Color::BLACK){
-            pa = new Knight(Color::BLACK);
-            options.append(pa);
-            _select.append(pa);
-            pa = new Rook(Color::BLACK);
-            options.append(pa);
-            _select.append(pa);
-            pa = new Bishop(Color::BLACK);
-            options.append(pa);
-            _select.append(pa);
-            pa = new Queen(Color::BLACK);
-            options.append(pa);
-            _select.append(pa);
-        } else {
 
-            pa = new Knight(Color::WHITE);
-            options.append(pa);
-            _select.append(pa);
-            pa = new Rook(Color::WHITE);
-            options.append(pa);
-            _select.append(pa);
-            pa = new Bishop(Color::WHITE);
-            options.append(pa);
-            _select.append(pa);
-            pa = new Queen(Color::WHITE);
-            options.append(pa);
-            _select.append(pa);
-        }
+        Color c = p->getColor();
+        pa = new Queen(c);
+        options.append(pa);
+        _select.append(pa);
         selected = pa;
+        pa = new Knight(c);
+        options.append(pa);
+        _select.append(pa);
+        pa = new Rook(c);
+        options.append(pa);
+        _select.append(pa);
+        pa = new Bishop(c);
+        options.append(pa);
+        _select.append(pa);
+
         for(int i = 0, n = options.size(); i<n;i++){
             options[i]->setPos(530+i*100 - p->pixmap().width()/2,250);
             addToScene(options[i]);
         }
 
+        moveBox(selected->x(),selected->y());
+        addToScene(_rect);
+        _select.append(_rect);
         Button* done = new Button("Done");
         int dxPos = 686 - done->boundingRect().width()/2,
                 dyPos = 350;
