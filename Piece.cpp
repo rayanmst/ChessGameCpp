@@ -1,7 +1,7 @@
 #include "Piece.h"
 #include "ChessGame.h"
 #include "King.h"
-
+#include <QDebug>
 extern ChessGame *g;
 Piece::Piece(Color color, QGraphicsItem *parent): QGraphicsPixmapItem(parent){
     _color = color; _alive = true; moveCount=0; _lastMoved = -1;
@@ -13,7 +13,7 @@ void Piece::mousePressEvent(QGraphicsSceneMouseEvent *e){
             g->selected = this;
             g->moveBox(this->x(),this->y());
             return;
-            }
+        }
 
         //Removendo selecao da peca
         if(this == g->pieceToMove){

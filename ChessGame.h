@@ -90,7 +90,6 @@ public:
 
 public slots:
     void start();
-    void restart();
     void closeSel();
 private:
     bool _end;

@@ -12,7 +12,7 @@ void Pawn::possibleMoves(){
     //White moves:
     if(color == Color::WHITE){
         //Foward
-        if(pRow>0 && (!g->chessBoard[pRow-1][pCol]->isOcupied())){
+        if(pRow>0 && !(g->chessBoard[pRow-1][pCol]->isOcupied())){
             _location.append(g->chessBoard[pRow-1][pCol]);
             positionSetting(_location.last());
             //First move condition

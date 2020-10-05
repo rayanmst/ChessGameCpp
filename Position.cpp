@@ -45,26 +45,26 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
 
             Pawn* pawn = dynamic_cast<Pawn*>(g->pieceToMove);
             Pawn* enemy = dynamic_cast<Pawn*>(this->currentPiece);
-            bool eps=false; Color c;
+            bool eps=false; Color c = Color::NOCOLOR;
             if(pawn && enemy){
+                bool posCondition = (pawn->getPosition()->row == enemy->getPosition()->row);
                 this->currentPiece->setAlive(false);
                 this->currentPiece->setPosition(NULL);
                 g->restInPeace(this->currentPiece);
-                if(enemy->isEnPassantVulnerable(this)){
+                if(enemy->isEnPassantVulnerable(this) && posCondition){
                     eps = true;
                     if(pawn->getColor()==Color::BLACK){
                         c = Color::BLACK;
-                    } else{
-                        eps = false;
+                    } else if(pawn->getColor()==Color::WHITE){
                         c = Color::WHITE;
-                    }
+                    } else eps = false;
                 }
             } else if(this->isOcupied()){
+                eps = false;
                 this->currentPiece->setAlive(false);
                 this->currentPiece->setPosition(NULL);
                 g->restInPeace(this->currentPiece);
             }
-
             //Novos parâmetros da peça movida
             g->pieceToMove->getPosition()->setOcupation(false);
             g->pieceToMove->getPosition()->currentPiece = NULL;
@@ -89,17 +89,13 @@ void Position::mousePressEvent(QGraphicsSceneMouseEvent *e){
             this->currentPiece->mousePressEvent(e);
         }
     }
-
 }
-
 void Position::placePiece(Piece *p){
     p->setPos(x()+41 - p->pixmap().width()/2,y()+41 - p->pixmap().width()/2);
     p->setPosition(this);
     setOcupation(true,p);
     currentPiece = p;
 }
-
-
 
 void Position::isInCheck(){
     int c=0;

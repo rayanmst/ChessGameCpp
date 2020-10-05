@@ -9,9 +9,9 @@
 #include "Knight.h"
 #include "Button.h"
 
-#include <QDebug>
 ChessGame::ChessGame(QWidget* parent):QGraphicsView(parent){
     selIsOpen = false; selected = NULL; _end = false;
+
     //Create Scene
     _gScene = new QGraphicsScene();
     _gScene->setSceneRect(0,0,1366,768);
@@ -108,6 +108,7 @@ void ChessGame::restInPeace(Piece* p){
     alivePiece.removeAll(p);
 }
 
+
 void ChessGame::showInitMenu(){
     QGraphicsPixmapItem *p = new QGraphicsPixmapItem();
     p->setPixmap(QPixmap(":/images/lIcon.png"));
@@ -150,15 +151,6 @@ void ChessGame::showEndMenu(){
     addToScene(winner);
     _itens.append(winner);
     winner->setVisible(true);
-
-    //Reset button
-    Button *rst = new Button("Reset");
-    int rxPos = width()/2 - rst->boundingRect().width()/2,
-            ryPos = 400;
-    rst->setPos(rxPos,ryPos);
-    connect(rst, SIGNAL(clicked()),this,SLOT(restart()));
-    addToScene(rst);
-    _itens.append(rst);
 
     //Quit Button
     Button* quit = new Button("Quit");
@@ -212,31 +204,6 @@ void ChessGame::start(){
     addToScene(check);
     _board->addPieces();
 
-}
-
-void ChessGame::restart(){
-    for(int i=0,n=_itens.size();i<n;i++){
-        removeFromScene(_itens[i]);
-    }
-    drawChessBoard();
-    //addToScene(_disp);
-    QGraphicsTextItem* wPiece = new QGraphicsTextItem();
-    wPiece->setPos(125,10);
-    wPiece->setZValue(1);
-    wPiece->setDefaultTextColor(Qt::white);
-    wPiece->setFont(QFont("",14));
-    wPiece->setPlainText("White Piece");
-    addToScene(wPiece);
-
-    QGraphicsTextItem* bPiece = new QGraphicsTextItem();
-    bPiece->setPos(1136,10);
-    bPiece->setZValue(1);
-    bPiece->setDefaultTextColor(Qt::black);
-    bPiece->setFont(QFont("",14));
-    bPiece->setPlainText("Black Piece");
-    addToScene(bPiece);
-    //addToScene(check);
-    _board->addPieces();
 }
 
 void ChessGame::closeSel(){
